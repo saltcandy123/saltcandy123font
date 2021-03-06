@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
+jobs:
+  build-font:
+    name: Build fonts
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install FontForge
+      run: sudo apt-get install fontforge python3-fontforge
+    - name: Build fonts
+      run: python3 build_fonts.py --tag ${{ github.ref }}
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+    - name: Upload saltcandy123font.ttf
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: font-dist/saltcandy123font.ttf
+        asset_name: saltcandy123font.ttf
+        asset_content_type: font/ttf
+    - name: Upload saltcandy123font.woff
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: font-dist/saltcandy123font.woff
+        asset_name: saltcandy123font.woff
+        asset_content_type: font/woff
+    - name: Upload saltcandy123font.woff2
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: font-dist/saltcandy123font.woff2
+        asset_name: saltcandy123font.woff2
+        asset_content_type: font/woff2
