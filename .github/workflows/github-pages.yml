@@ -1,0 +1,43 @@
+name: GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
+jobs:
+  build:
+    name: Build GitHub Pages
+    # Ubuntu 20.04 or later is required for python3-fontforge
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install FontForge
+      run: sudo apt-get install fontforge python3-fontforge
+    - name: Build fonts
+      run: python3 build_fonts.py --tag ${{ github.sha }}
+    - name: Build webapp
+      run: |
+        export NEXTJS_BASE_PATH=$(echo $GITHUB_REPOSITORY | sed -e 's@.*/\(.*\)@\/\1@')
+        cd webapp
+        yarn
+        yarn run build
+    - name: Add miscellaneous files into /webapp-dist
+      run: |
+        cd webapp-dist/
+        touch .nojekyll
+        fontimage ../font-dist/saltcandy123font.ttf -o sample.png
+    - name: Publish GitHub Pages
+      run: |
+        mv .git webapp-dist/
+        cd webapp-dist/
+        git checkout --orphan gh-pages
+        git add .
+        git config user.email "saltcandy123@gmail.com"
+        git config user.name "saltcandy123 (GitHub Actions)"
+        git commit -m 'publish GitHub Pages (source commit: ${{ github.sha }})'
+        git push origin gh-pages -f
