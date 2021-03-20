@@ -19,10 +19,10 @@ jobs:
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
     - name: Build fonts
-      run: python3 build_fonts.py --tag ${{ github.sha }}
+      run: python3 build_fonts.py --add-version ${{ github.sha }}
     - name: Build webapp
       run: |
-        export NEXTJS_BASE_PATH=$(echo $GITHUB_REPOSITORY | sed -e 's@.*/\(.*\)@\/\1@')
+        export NEXTJS_BASE_PATH=/${GITHUB_REPOSITORY#*/}
         cd webapp
         yarn
         yarn run build
@@ -39,5 +39,5 @@ jobs:
         git add .
         git config user.email "saltcandy123@gmail.com"
         git config user.name "saltcandy123 (GitHub Actions)"
-        git commit -m 'publish GitHub Pages (source commit: ${{ github.sha }})'
+        git commit -m 'Publish GitHub Pages (source commit: ${{ github.sha }})'
         git push origin gh-pages -f

@@ -10,7 +10,7 @@ import fontforge
 BASE_DIR = pathlib.Path(__file__).parent
 
 
-def build_saltcandy123font(*, tag):
+def build_saltcandy123font(*, version: str) -> fontforge.font:
     font = fontforge.font()
     font.familyname = "saltcandy123font"
     font.fullname = "saltcandy123font-Regular"
@@ -18,8 +18,8 @@ def build_saltcandy123font(*, tag):
     font.copyright = "Copyright (C) saltcandy123"
     font.weight = "Regular"
     font.os2_weight = 400
-    if tag:
-        font.version = tag
+    if version:
+        font.version = version
 
     for svg_path in BASE_DIR.joinpath("glyphs").iterdir():
         match = re.search("^u([0-9a-f]{4}).svg$", svg_path.name)
@@ -35,18 +35,17 @@ def build_saltcandy123font(*, tag):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tag")
+    parser.add_argument("--add-version")
     args = parser.parse_args()
 
     dist_dir = BASE_DIR.joinpath("font-dist")
     dist_dir.mkdir(exist_ok=True)
 
     font_map = {
-        "saltcandy123font": build_saltcandy123font(tag=args.tag),
+        "saltcandy123font": build_saltcandy123font(version=args.add_version),
     }
-    for font_name in font_map:
-        font = font_map[font_name]
-        for ext in ["ttf", "woff", "woff2"]:
+    for font_name, font in font_map.items():
+        for ext in ["ttf", "woff"]:
             font.generate(str(dist_dir.joinpath(f"{font_name}.{ext}")))
 
 

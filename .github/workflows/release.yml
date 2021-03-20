@@ -14,7 +14,7 @@ jobs:
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
     - name: Build fonts
-      run: python3 build_fonts.py --tag ${{ github.ref }}
+      run: python3 build_fonts.py --add-version ${GITHUB_REF#refs/tags/}
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -41,12 +41,3 @@ jobs:
         asset_path: font-dist/saltcandy123font.woff
         asset_name: saltcandy123font.woff
         asset_content_type: font/woff
-    - name: Upload saltcandy123font.woff2
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: font-dist/saltcandy123font.woff2
-        asset_name: saltcandy123font.woff2
-        asset_content_type: font/woff2
