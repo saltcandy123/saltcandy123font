@@ -23,7 +23,7 @@ jobs:
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
     - name: Build fonts
-      run: python3 build_fonts.py --tag ${{ github.sha }}
+      run: python3 build_fonts.py --add-version ${{ github.sha }}
     - name: Archive font-dist
       uses: actions/upload-artifact@v2
       with:
