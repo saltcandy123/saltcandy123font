@@ -1,5 +1,1 @@
-node_modules
-.next
-/font-dist
-/webapp-dist
-yarn-error.log
+/dist

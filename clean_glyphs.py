@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Remove unnecessary XML elements from glyph SVG files"""
+
 import argparse
 import pathlib
 import xml.dom.minidom
@@ -52,9 +54,11 @@ def clean_dom(doc: xml.dom.minidom.Document, *, with_template: bool) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("dirname")
-    parser.add_argument("--with-template", action="store_true")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("dirname", help="path to directory that glyph SVG files are in")
+    parser.add_argument(
+        "--with-template", action="store_true", help="draw template lines on each SVG"
+    )
     args = parser.parse_args()
 
     glyphs_dir = pathlib.Path(args.dirname)

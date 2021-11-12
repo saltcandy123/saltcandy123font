@@ -8,38 +8,27 @@ on:
 
 jobs:
   build:
-    name: Build fonts and demo pages
-    # Ubuntu 20.04 or later is required for python3-fontforge
+    name: Build font
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
     - name: Lint glyph SVG files
       run: |
-        python3 utils/clean_glyphs.py glyphs/
+        python3 clean_glyphs.py glyphs/
         git diff --numstat --exit-code
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
-    - name: Build fonts
-      run: python3 build_fonts.py --add-version ${{ github.sha }}
-    - name: Archive font-dist
-      uses: actions/upload-artifact@v2
-      with:
-        name: font-dist
-        path: font-dist
-    - name: Build webapp
+    - name: Build font
+      run: python3 build_font.py ${{ github.sha }}
+    - name: Update font image
       run: |
-        cd webapp
-        yarn
-        yarn run lint
-        yarn run build
-    - name: Archive webapp-dist
+        bash update-fontimage.sh
+        cp fontimage.png dist/
+    - name: Archive dist
       uses: actions/upload-artifact@v2
       with:
-        name: webapp-dist
-        path: webapp-dist
+        path: dist
+        name: dist
   super-linter:
     name: Run Super-Linter
     runs-on: ubuntu-latest
@@ -49,4 +38,4 @@ jobs:
       uses: github/super-linter@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        FILTER_REGEX_EXCLUDE: .*/glyphs/.*|.*/webapp/.*\.(jsx?|tsx?)
+        FILTER_REGEX_EXCLUDE: .*/glyphs/.*
