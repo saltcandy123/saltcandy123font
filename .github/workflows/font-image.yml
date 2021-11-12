@@ -1,0 +1,29 @@
+
+name: Font image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-font:
+    name: Update font image
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install FontForge
+      run: sudo apt-get install fontforge python3-fontforge
+    - name: Build fonts
+      run: python3 build_font.py ${{ github.sha }}
+    - name: Update font image
+      run: bash update-fontimage.sh
+    - name: Push the update to GitHub
+      run: |
+        git config user.email "saltcandy123@gmail.com"
+        git config user.name "saltcandy123 (GitHub Actions)"
+        git add fontimage.png
+        if git commit -m 'Update font image'; then
+          git push origin
+        else
+          echo No change on fontimage.png
+        fi

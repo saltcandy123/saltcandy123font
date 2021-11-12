@@ -7,14 +7,29 @@ on:
 
 jobs:
   build-font:
-    name: Build fonts
+    name: Build font
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
     - name: Build fonts
-      run: python3 build_fonts.py --add-version ${GITHUB_REF#refs/tags/}
+      run: python3 build_font.py ${GITHUB_REF#refs/tags/v}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist
+  create-release:
+    name: Create release
+    needs: build-font
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: dist
+        path: dist
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -29,7 +44,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: font-dist/saltcandy123font.ttf
+        asset_path: dist/saltcandy123font.ttf
         asset_name: saltcandy123font.ttf
         asset_content_type: font/ttf
     - name: Upload saltcandy123font.woff
@@ -38,6 +53,50 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: font-dist/saltcandy123font.woff
+        asset_path: dist/saltcandy123font.woff
         asset_name: saltcandy123font.woff
         asset_content_type: font/woff
+  publish-to-npm-registry:
+    name: Publish npm package to npm registry
+    needs: build-font
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+        registry-url: 'https://registry.npmjs.org'
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: dist
+        path: dist
+    - name: Publish package
+      run: |
+        cd dist
+        yarn publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish-to-github-registry:
+    name: Publish npm package to GitHub Packages registry
+    needs: build-font
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@saltcandy123'
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: dist
+        path: dist
+    - name: Publish package
+      run: |
+        cd dist
+        yarn publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
