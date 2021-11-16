@@ -16,7 +16,24 @@ jobs:
     - name: Build fonts
       run: python3 build_font.py ${{ github.sha }}
     - name: Update font image
-      run: bash update-fontimage.sh
+      run: |
+        fontimage \
+          dist/saltcandy123font.ttf \
+          --width 460 \
+          --pixelsize 20 \
+          --fontname \
+          --text " " \
+          --text "0123456789 ()[]{}<>/\\|\`~@#$%^&*_+-=;:'\",.!?" \
+          --text "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz" \
+          --text " " \
+          --text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." \
+          -o fontimage.png
+        convert \
+            fontimage.png \
+            -bordercolor white \
+            -border 20x20 \
+            -strip \
+            fontimage.pngage.sh
     - name: Push the update to GitHub
       run: |
         git config user.email "saltcandy123@gmail.com"

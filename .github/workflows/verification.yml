@@ -20,10 +20,6 @@ jobs:
       run: sudo apt-get install fontforge python3-fontforge
     - name: Build font
       run: python3 build_font.py ${{ github.sha }}
-    - name: Update font image
-      run: |
-        bash update-fontimage.sh
-        cp fontimage.png dist/
     - name: Archive dist
       uses: actions/upload-artifact@v2
       with:
