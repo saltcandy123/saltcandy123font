@@ -33,7 +33,7 @@ jobs:
             -bordercolor white \
             -border 20x20 \
             -strip \
-            fontimage.pngage.sh
+            fontimage.png
     - name: Push the update to GitHub
       run: |
         git config user.email "saltcandy123@gmail.com"
