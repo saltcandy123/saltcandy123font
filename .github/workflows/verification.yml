@@ -2,7 +2,6 @@ name: Verification
 
 on:
   push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -15,12 +14,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: Lint glyph SVG files
       run: |
-        python3 clean_glyphs.py glyphs/
+        python3 scripts/clean_glyphs.py glyphs/
         git diff --numstat --exit-code
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
-    - name: Build font
-      run: python3 build_font.py ${{ github.sha }}
+    - name: Build dist
+      run: bash scripts/build-dist.sh 0.0.0
     - name: Archive dist
       uses: actions/upload-artifact@v2
       with:

@@ -6,15 +6,15 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
-  build-font:
+  build-dist:
     name: Build font
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Install FontForge
       run: sudo apt-get install fontforge python3-fontforge
-    - name: Build fonts
-      run: python3 build_font.py ${GITHUB_REF#refs/tags/v}
+    - name: Run build script
+      run: bash scripts/build-dist.sh "${GITHUB_REF#refs/tags/v}"
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
@@ -22,7 +22,7 @@ jobs:
         path: dist
   create-release:
     name: Create release
-    needs: build-font
+    needs: build-dist
     runs-on: ubuntu-20.04
     steps:
     - name: Download artifact
@@ -58,7 +58,7 @@ jobs:
         asset_content_type: font/woff
   publish-to-npm-registry:
     name: Publish npm package to npm registry
-    needs: build-font
+    needs: build-dist
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/setup-node@v2
@@ -72,13 +72,13 @@ jobs:
         path: dist
     - name: Publish package
       run: |
-        cd dist
+        cd dist/npm-package
         yarn publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   publish-to-github-registry:
     name: Publish npm package to GitHub Packages registry
-    needs: build-font
+    needs: build-dist
     runs-on: ubuntu-20.04
     permissions:
       contents: read
@@ -96,7 +96,7 @@ jobs:
         path: dist
     - name: Publish package
       run: |
-        cd dist
+        cd dist/npm-package
         yarn publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
