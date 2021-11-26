@@ -19,6 +19,7 @@ NPM_PACKAGE_DIR="${DIST_DIR}/npm-package"
 mkdir -p "${NPM_PACKAGE_DIR}"
 cp "${DIST_DIR}/saltcandy123font.ttf" "${DIST_DIR}/saltcandy123font.woff" "${NPM_PACKAGE_DIR}/"
 cp "${BASE_DIR}/README-npm.md" "${NPM_PACKAGE_DIR}/README.md"
+bash "${BASE_DIR}/scripts/generate-fontimage.sh" "${DIST_DIR}/saltcandy123font.ttf" "${NPM_PACKAGE_DIR}/fontimage.png"
 cat <<EOF | python -m json.tool >"${NPM_PACKAGE_DIR}/package.json"
 {
     "name": "@saltcandy123/saltcandy123font",

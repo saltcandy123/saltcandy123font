@@ -15,23 +15,7 @@ jobs:
     - name: Update font image
       run: |
         python3 scripts/build_font.py -o font.ttf
-        fontimage \
-          font.ttf \
-          --width 460 \
-          --pixelsize 20 \
-          --fontname \
-          --text " " \
-          --text "0123456789 ()[]{}<>/\\|\`~@#$%^&*_+-=;:'\",.!?" \
-          --text "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz" \
-          --text " " \
-          --text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." \
-          -o fontimage.png
-        convert \
-            fontimage.png \
-            -bordercolor white \
-            -border 20x20 \
-            -strip \
-            fontimage.png
+        bash scripts/generate-fontimage.sh font.ttf fontimage.png
         rm font.ttf
     - name: Push the update to GitHub
       run: |

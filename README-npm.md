@@ -1,8 +1,8 @@
 # saltcandy123font
 
-This is a simple handwritten font created by @saltcandy123.
+This is a handwritten font created by @saltcandy123.
 
-![Font image](https://raw.githubusercontent.com/saltcandy123/saltcandy123font/main/fontimage.png)
+![Font image](./fontimage.png)
 
 ## Usage
 
