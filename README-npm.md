@@ -2,7 +2,7 @@
 
 This is a handwritten font created by @saltcandy123.
 
-![Font image](./fontimage.png)
+![Font image](https://raw.githubusercontent.com/saltcandy123/saltcandy123font/main/fontimage.png)
 
 ## Usage
 
