@@ -30,32 +30,30 @@ jobs:
       with:
         name: dist
         path: dist
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create new release and upload assets
+      uses: actions/github-script@v5
       with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-    - name: Upload saltcandy123font.ttf
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/saltcandy123font.ttf
-        asset_name: saltcandy123font.ttf
-        asset_content_type: font/ttf
-    - name: Upload saltcandy123font.woff
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/saltcandy123font.woff
-        asset_name: saltcandy123font.woff
-        asset_content_type: font/woff
+        script: |
+          const {readFileSync} = require('fs')
+          const tagName = context.ref.replace(/^refs\/tags\//, '')
+          const {
+            data: {id: releaseId}
+          } = await github.rest.repos.createRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            tag_name: tagName,
+            name: tagName
+          })
+          const asset_filenames = ['saltcandy123font.ttf', 'saltcandy123font.woff']
+          for (const filename of asset_filenames) {
+            await github.rest.repos.uploadReleaseAsset({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
+              name: filename,
+              data: readFileSync(`./dist/${filename}`)
+            })
+          }
   publish-to-npm-registry:
     name: Publish npm package to npm registry
     needs: build-dist
