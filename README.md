@@ -19,6 +19,9 @@ This is a handwritten font created by @saltcandy123.
   - Glyphs: [`glyphs/hiragana`](glyphs/hiragana)
 - (U+30A0 - U+30FF) Katakana
   - Glyphs: [`glyphs/katakana`](glyphs/katakana)
+- (U+FF00 - U+FFEF) Halfwidth and Fullwidth Forms
+  - Glyphs: [`glyphs/halfwidth-and-fullwidth-forms`](glyphs/halfwidth-and-fullwidth-forms)
+  - Excluding halfwidth Hangul variants and halfwidth symbol variants (U+FFA0 - U+FFDC, U+FFE8 - U+FFEE)
 
 ## Source code
 
