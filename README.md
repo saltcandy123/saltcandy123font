@@ -15,6 +15,8 @@ This is a handwritten font created by @saltcandy123.
   - Glyphs: [`glyphs/basic-latin`](glyphs/basic-latin)
 - (U+3040 - U+309F) Hiragana
   - Glyphs: [`glyphs/hiragana`](glyphs/hiragana)
+- (U+30A0 - U+30FF) Katakana
+  - Glyphs: [`glyphs/katakana`](glyphs/katakana)
 
 ## Source code
 
