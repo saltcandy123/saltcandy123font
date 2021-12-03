@@ -13,6 +13,8 @@ This is a handwritten font created by @saltcandy123.
 
 - (U+0000 - U+007F) Basic Latin (ASCII)
   - Glyphs: [`glyphs/basic-latin`](glyphs/basic-latin)
+- (U+3000 - U+303F) CJK Symbols and Punctuation
+  - Glyphs: [`glyphs/cjk-symbols-and-punctuation`](glyphs/cjk-symbols-and-punctuation)
 - (U+3040 - U+309F) Hiragana
   - Glyphs: [`glyphs/hiragana`](glyphs/hiragana)
 - (U+30A0 - U+30FF) Katakana
