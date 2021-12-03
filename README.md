@@ -9,6 +9,13 @@ This is a handwritten font created by @saltcandy123.
 
 ![Font image](./fontimage.png)
 
+## Supported characters
+
+- (U+0000 - U+007F) Basic Latin (ASCII)
+  - Glyphs: [`glyphs/basic-latin`](glyphs/basic-latin)
+- (U+3040 - U+309F) Hiragana
+  - Glyphs: [`glyphs/hiragana`](glyphs/hiragana)
+
 ## Source code
 
 - **`glyphs/xxxx/uXXXX.svg`** defines the shape of each character. For example, [`u0073.svg`](glyphs/basic-latin/u0073.svg) is the image of "s" (U+0073). A character may have another image (`uXXXX-vert.svg`) for vertical writing ("vert" feature).
