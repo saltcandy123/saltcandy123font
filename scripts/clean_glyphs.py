@@ -4,24 +4,12 @@
 
 import argparse
 import pathlib
+import re
+import unicodedata
 import xml.dom.minidom
 
 
-def create_line_node(
-    doc: xml.dom.minidom.Document, x1: int, y1: int, x2: int, y2: int
-) -> xml.dom.minidom.Node:
-    node = doc.createElement("line")
-    node.setAttribute("x1", str(x1))
-    node.setAttribute("y1", str(y1))
-    node.setAttribute("x2", str(x2))
-    node.setAttribute("y2", str(y2))
-    node.setAttribute("stroke", "#99f")
-    node.setAttribute("stroke-width", "5")
-    node.setAttribute("class", "template")
-    return node
-
-
-def clean_dom(doc: xml.dom.minidom.Document, *, with_template: bool) -> None:
+def clean_dom(doc: xml.dom.minidom.Document) -> None:
     svg = doc.firstChild
     namespaces = set()
     for key in set(svg.attributes.keys()) - {"xmlns", "width", "height"}:
@@ -43,15 +31,61 @@ def clean_dom(doc: xml.dom.minidom.Document, *, with_template: bool) -> None:
                 raise RuntimeError(f"Unexpected tag: {child.tagName}")
         else:
             svg.removeChild(child)
-    if with_template:
-        first_element = svg.firstChild
-        width = int(svg.getAttribute("width"))
-        height = int(svg.getAttribute("height"))
-        for y in range(0, height + 1, 400):
-            svg.insertBefore(create_line_node(doc, 0, y, width, y), first_element)
-        svg.insertBefore(
-            create_line_node(doc, width // 2, 0, width // 2, height), first_element
-        )
+
+
+def add_template(doc: xml.dom.minidom.Document, char_code: int) -> None:
+    svg = doc.firstChild
+    nodes = list()
+    width = int(svg.getAttribute("width"))
+    height = int(svg.getAttribute("height"))
+
+    for top in range(-1000, height + 1, 1000):
+        for delta in [0, 400, 800, 1000]:
+            y = top + delta
+            if y <= height:
+                nodes.append(create_line(doc, x1=-800, y1=y, x2=width, y2=y))
+
+    for x in [-800, -400, 0, width // 2, width]:
+        nodes.append(create_line(doc, x1=x, y1=-1000, x2=x, y2=height))
+
+    nodes.append(create_line(doc, x1=0, y1=0, x2=width, y2=0, width=10))
+    nodes.append(create_line(doc, x1=width, y1=0, x2=width, y2=height, width=10))
+    nodes.append(create_line(doc, x1=width, y1=height, x2=0, y2=height, width=10))
+    nodes.append(create_line(doc, x1=0, y1=height, x2=0, y2=0, width=10))
+
+    text = f"{chr(char_code)} (U+{char_code:04X}, {unicodedata.name(chr(char_code))})"
+    nodes.append(create_text(doc, text=text, x=0, y=height - 25, size=50))
+
+    first_element = svg.firstChild
+    for node in nodes:
+        svg.insertBefore(node, first_element)
+
+
+def create_line(
+    doc: xml.dom.minidom.Document, *, x1: int, y1: int, x2: int, y2: int, width: int = 2
+) -> xml.dom.minidom.Node:
+    node = doc.createElement("line")
+    node.setAttribute("x1", str(x1))
+    node.setAttribute("y1", str(y1))
+    node.setAttribute("x2", str(x2))
+    node.setAttribute("y2", str(y2))
+    node.setAttribute("stroke", "#99f")
+    node.setAttribute("stroke-width", str(width))
+    node.setAttribute("class", "template")
+    return node
+
+
+def create_text(
+    doc: xml.dom.minidom.Document, *, text: str, x: int, y: int, size: int
+) -> xml.dom.minidom.Node:
+    node = doc.createElement("text")
+    node.setAttribute("x", str(x))
+    node.setAttribute("y", str(y))
+    node.setAttribute("font-size", str(size))
+    node.setAttribute("fill", "#f99")
+    node.setAttribute("class", "template")
+    node.appendChild(doc.createTextNode(text))
+    return node
 
 
 def main():
@@ -68,10 +102,16 @@ def main():
     glyphs_dir = args.dirname
 
     for svg_path in glyphs_dir.glob("**/*.svg"):
+        match = re.search("^u([0-9a-f]+)(-([a-z]+))?.svg$", svg_path.name)
+        if match is None:
+            continue
+        char_code = int(match.group(1), 16)
         with open(svg_path) as f:
             svg_content = f.read()
         with xml.dom.minidom.parseString(svg_content) as dom:
-            clean_dom(dom, with_template=args.with_template)
+            clean_dom(dom)
+            if args.with_template:
+                add_template(dom, char_code)
             with open(svg_path, "w") as f:
                 dom.writexml(f, newl="\n")
 
