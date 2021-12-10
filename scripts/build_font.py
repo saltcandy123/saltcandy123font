@@ -42,7 +42,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
 
     # Import basic glyph outlines (e.g. u3041.svg)
     for svg_path in all_svg_paths:
-        match = re.search("^u([0-9a-f]{4}).svg$", svg_path.name)
+        match = re.search("^u([0-9a-f]+).svg$", svg_path.name)
         if not match:
             continue
         code = int(match.group(1), 16)
@@ -52,7 +52,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
 
     # Import additional glyph outlines for subtable (e.g. u3041-vert.svg)
     for svg_path in all_svg_paths:
-        match = re.search("^u([0-9a-f]{4})-([a-z]+).svg$", svg_path.name)
+        match = re.search("^u([0-9a-f]+)-([a-z]+).svg$", svg_path.name)
         if not match:
             continue
         code = int(match.group(1), 16)
