@@ -43,9 +43,9 @@ def add_template(doc: xml.dom.minidom.Document, char_code: int) -> None:
         for delta in [0, 400, 800, 1000]:
             y = top + delta
             if y <= height:
-                nodes.append(create_line(doc, x1=-800, y1=y, x2=width, y2=y))
+                nodes.append(create_line(doc, x1=-1000, y1=y, x2=width, y2=y))
 
-    for x in [-800, -400, 0, width // 2, width]:
+    for x in [-1000, -500, 0, width // 2, width]:
         nodes.append(create_line(doc, x1=x, y1=-1000, x2=x, y2=height))
 
     nodes.append(create_line(doc, x1=0, y1=0, x2=width, y2=0, width=10))
