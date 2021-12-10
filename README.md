@@ -19,6 +19,9 @@ This is a handwritten font created by @saltcandy123.
   - Glyphs: [`glyphs/hiragana`](glyphs/hiragana)
 - (U+30A0 - U+30FF) Katakana
   - Glyphs: [`glyphs/katakana`](glyphs/katakana)
+- (U+4E00 - U+9FFF) CJK Unified Ideographs
+  - Glyphs: [`glyphs/cjk-unified-ideographs`](glyphs/cjk-unified-ideographs)
+  - Supporting only a small set of characters
 - (U+FF00 - U+FFEF) Halfwidth and Fullwidth Forms
   - Glyphs: [`glyphs/halfwidth-and-fullwidth-forms`](glyphs/halfwidth-and-fullwidth-forms)
   - Excluding halfwidth Hangul variants and halfwidth symbol variants (U+FFA0 - U+FFDC, U+FFE8 - U+FFEE)
@@ -30,3 +33,29 @@ This is a handwritten font created by @saltcandy123.
 - **[`scripts/clean_glyphs.py`](scripts/clean_glyphs.py)** cleans SVG files by removing extra data from SVG.
 - **[`scripts/build-dist.sh`](scripts/build-dist.sh)** builds distribution files under `dist` directory.
 - **[`scripts/generate-fontimage.sh`](scripts/generate-fontimage.sh)** produces a font thumbnail image.
+
+## How to add a glyph
+
+```bash
+## Create a directory under "glyphs"
+mkdir -p glyphs/draft
+
+## Create an empty SVG file
+cat <<EOF >glyphs/draft/u5b57.svg
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg"
+  width="1000" height="1000"></svg>
+EOF
+
+## Add template lines
+python scripts/clean_glyphs.py glyphs/draft --with-template
+
+## Draw outlines on your SVG editor (e.g. inkscape)
+inkscape glyphs/draft/u5b57.svg
+
+## Erase template lines
+python scripts/clean_glyphs.py glyphs/draft
+
+## Build a font file
+python scripts/build_font.py -o saltcandy123font.ttf
+```
