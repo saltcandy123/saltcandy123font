@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "DemoFont";
+  src:
+    url("~@saltcandy123/saltcandy123font/saltcandy123font.ttf") format("truetype"),
+    url("~@saltcandy123/saltcandy123font/saltcandy123font.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}

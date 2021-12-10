@@ -1,0 +1,33 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches: [ gh-pages-src ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build GitHub Pages
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install packages
+      run: yarn
+    - name: Run linter
+      run: yarn run lint
+    - name: Build
+      run: NEXTJS_BASE_PATH=/${GITHUB_REPOSITORY#*/} yarn run build
+    - name: Publish GitHub Pages
+      run: |
+        cd dist/
+        touch .nojekyll
+        mv ../.git .
+        git checkout --orphan gh-pages
+        git config user.email "$(git show -s --format='%ae' gh-pages-src)"
+        git config user.name "(git show -s --format='%an' gh-pages-src) (GitHub Actions)"
+        git add .
+        git commit -m "Publish GitHub Pages"
+        git push origin gh-pages -f
