@@ -22,6 +22,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     font.version = version
     font.encoding = "UnicodeBmp"
     font.hasvmetrics = 1  # required to enable vwidth settings
+    font.em = 1000
 
     # Add lookup subtable for vertical writing
     font.addLookup(
@@ -46,7 +47,8 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
         if not match:
             continue
         code = int(match.group(1), 16)
-        glyph = font.createChar(code)
+        glyph_name = f"u{code:04x}"
+        glyph = font.createChar(code, glyph_name)
         glyph.importOutlines(str(svg_path))
         glyph.width, glyph.vwidth = read_svg_size(svg_path)
 
