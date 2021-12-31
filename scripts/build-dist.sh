@@ -19,6 +19,11 @@ NPM_PACKAGE_DIR="${DIST_DIR}/npm-package"
 mkdir -p "${NPM_PACKAGE_DIR}"
 cp "${DIST_DIR}/saltcandy123font.ttf" "${DIST_DIR}/saltcandy123font.woff" "${NPM_PACKAGE_DIR}/"
 cp "${BASE_DIR}/README-npm.md" "${NPM_PACKAGE_DIR}/README.md"
+GIT_TAG=$(git describe --tags || true)
+if [ -n "${GIT_TAG}" ]; then
+    BASE_URL=https://raw.githubusercontent.com/saltcandy123/saltcandy123font
+    sed -e "s@${BASE_URL}/main/@${BASE_URL}/${GIT_TAG}/@g" -i "${NPM_PACKAGE_DIR}/README.md"
+fi
 cat <<EOF | python -m json.tool >"${NPM_PACKAGE_DIR}/package.json"
 {
     "name": "@saltcandy123/saltcandy123font",
