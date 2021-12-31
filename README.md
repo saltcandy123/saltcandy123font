@@ -2,12 +2,14 @@
 
 @saltcandy123 による手書きフォントです。
 
-This is a handwritten font created by @saltcandy123.
+This is a font based on the handwriting of @saltcandy123.
 
-- Download saltcandy123font from [the latest release page](https://github.com/saltcandy123/saltcandy123font/releases/latest).
-- An npm package ([@saltcandy123/saltcandy123font](https://www.npmjs.com/package/@saltcandy123/saltcandy123font)) is also available.
+![A font image of saltcandy123font.](fontimage.png)
 
-![Font image](./fontimage.png)
+Download the font files (TrueType, WOFF) from [the release page](https://github.com/saltcandy123/saltcandy123font/releases/latest).
+If you plan to use the font in a Node.js project, [an npm package](https://www.npmjs.com/package/@saltcandy123/saltcandy123font) (`@saltcandy123/saltcandy123font`) is also available.
+
+Visit [a demo page](https://saltcandy123.github.io/saltcandy123font/) to try the font with your texts.
 
 ## Supported characters
 
@@ -19,7 +21,7 @@ This is a handwritten font created by @saltcandy123.
   - Glyphs: [`glyphs/hiragana`](glyphs/hiragana)
 - (U+30A0 - U+30FF) Katakana
   - Glyphs: [`glyphs/katakana`](glyphs/katakana)
-- (U+4E00 - U+9FFF) CJK Unified Ideographs
+- (U+4E00 - U+9FFF) CJK Unified Ideographs (漢字)
   - Glyphs: [`glyphs/cjk-unified-ideographs`](glyphs/cjk-unified-ideographs)
   - Supporting only a small set of characters
 - (U+FF00 - U+FFEF) Halfwidth and Fullwidth Forms
@@ -34,7 +36,9 @@ This is a handwritten font created by @saltcandy123.
 - **[`scripts/build-dist.sh`](scripts/build-dist.sh)** builds distribution files under `dist` directory.
 - **[`scripts/generate-fontimage.sh`](scripts/generate-fontimage.sh)** produces a font thumbnail image.
 
-## How to add a glyph
+Refer to `gh-pages-src` branch for the source code of the demo page.
+
+### How to add a glyph
 
 ```bash
 ## Create a directory under "glyphs"
