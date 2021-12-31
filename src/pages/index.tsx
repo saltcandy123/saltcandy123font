@@ -13,9 +13,6 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  appTitle: {
-    flexGrow: 1,
-  },
   mainContainer: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
@@ -39,12 +36,7 @@ const Homepage: NextPage = () => {
     <>
       <AppBar position="relative">
         <Toolbar>
-          <Typography
-            variant="h6"
-            component="span"
-            noWrap
-            className={styles.appTitle}
-          >
+          <Typography variant="h6" component="span" noWrap>
             <NextLink href="/" passHref>
               <MaterialLink color="inherit" underline="none">
                 saltcandy123font
