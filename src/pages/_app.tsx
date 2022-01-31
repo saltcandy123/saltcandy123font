@@ -1,28 +1,23 @@
 import React from "react";
 import App, { AppProps } from "next/app";
 import Head from "next/head";
-import { createTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import "@src/fonts.css";
 
 const theme = createTheme({
   typography: {
     fontSize: 16,
-    fontFamily: "DemoFont",
+    fontFamily: '"saltcandy123font"',
   },
 });
 
 const CustomApp: React.FunctionComponent<AppProps> = (props) => {
-  // See https://material-ui.com/guides/server-rendering/
-  React.useEffect(() => {
-    const jssStyles = document.querySelector("#jss-server-side");
-    jssStyles?.parentElement?.removeChild(jssStyles);
-  }, []);
-
   return (
     <>
       <Head>
         <title>saltcandy123font</title>
         <meta name="robots" content="noindex" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

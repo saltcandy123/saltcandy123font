@@ -7,29 +7,11 @@ import {
   AppBar,
   Container,
   Link as MaterialLink,
-  makeStyles,
   Toolbar,
   Typography,
-} from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  mainContainer: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-  },
-  pageTitle: {
-    wordBreak: "break-word",
-  },
-  textField: {
-    fontFamily: "sans-serif",
-  },
-  textPreview: {
-    wordBreak: "break-word",
-  },
-}));
+} from "@mui/material";
 
 const Homepage: NextPage = () => {
-  const styles = useStyles();
   const [text, setText] = React.useState<string>("");
 
   return (
@@ -48,10 +30,15 @@ const Homepage: NextPage = () => {
       <Container
         component="main"
         maxWidth="md"
-        className={styles.mainContainer}
+        sx={{
+          mt: 4,
+          mb: 4,
+        }}
       >
         <Typography
-          className={styles.pageTitle}
+          sx={{
+            wordBreak: "break-word",
+          }}
           variant="h3"
           component="h1"
           gutterBottom
@@ -69,13 +56,8 @@ const Homepage: NextPage = () => {
             Download the latest version of the font here.
           </a>
         </Typography>
-        <Typography
-          className={styles.pageTitle}
-          variant="h4"
-          component="h2"
-          gutterBottom
-        >
-          Demos
+        <Typography variant="h4" component="h2" gutterBottom>
+          Sample text
         </Typography>
         <Typography variant="body1" paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -86,18 +68,27 @@ const Homepage: NextPage = () => {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </Typography>
+        <Typography variant="h4" component="h2" gutterBottom>
+          Try with your text
+        </Typography>
         <Box mb={4}>
           <TextField
             multiline
             fullWidth
             variant="filled"
             label="Type something here"
-            InputLabelProps={{ className: styles.textField }}
-            InputProps={{ className: styles.textField }}
+            InputLabelProps={{ sx: { fontFamily: "sans-serif" } }}
+            InputProps={{ sx: { fontFamily: "sans-serif" } }}
             onChange={(e) => setText(e.target.value)}
           />
         </Box>
-        <Typography component="p" className={styles.textPreview}>
+        <Typography
+          component="p"
+          sx={{
+            wordBreak: "break-word",
+          }}
+          gutterBottom
+        >
           {text
             .split("\n")
             .map((line, idx) => [idx > 0 && <br key={idx} />, line])}
