@@ -25,6 +25,27 @@ jobs:
         with:
           path: dist
           name: dist
+  fontbakery:
+    name: Check with Font Bakery
+    needs: build-dist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Install Font Bakery
+        run: python3 -m pip install fontbakery
+      - name: Run Font Bakery
+        run: |
+          fontbakery check-universal \
+            -x com.google.fonts/check/monospace \
+            dist/saltcandy123font-Regular.ttf
   super-linter:
     name: Check with Super-Linter
     runs-on: ubuntu-latest

@@ -29,7 +29,7 @@ def main() -> None:
     dist_dir = BASE_DIR.joinpath("dist")
     dist_dir.mkdir(exist_ok=True)
 
-    font_filenames = [f"saltcandy123font.{ext}" for ext in ["ttf", "woff"]]
+    font_filenames = [f"saltcandy123font-Regular.{ext}" for ext in ["ttf", "woff"]]
     for filename in font_filenames:
         file_path = dist_dir.joinpath(filename)
         fontbuild.generate_font_file(

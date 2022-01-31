@@ -44,7 +44,10 @@ jobs:
               tag_name: tagName,
               name: tagName
             })
-            const assetFilenames = ['saltcandy123font.ttf', 'saltcandy123font.woff']
+            const assetFilenames = [
+              'saltcandy123font-Regular.ttf',
+              'saltcandy123font-Regular.woff'
+            ]
             for (const filename of assetFilenames) {
               await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
