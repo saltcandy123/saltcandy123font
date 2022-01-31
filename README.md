@@ -30,6 +30,8 @@ Visit [a demo page](https://saltcandy123.github.io/saltcandy123font/) to try the
 - **[`scripts/distbuild.py`](scripts/distbuild.py)** builds distribution files under `dist` directory.
 - **[`scripts/fontimagegen.sh`](scripts/fontimagegen.sh)** produces a font thumbnail image.
 
+Note that the scripts require Python 3.10 and [FontForge](https://fontforge.org/) 2020-11-07.
+
 Refer to `gh-pages-src` branch for the source code of the demo page.
 
 ### How to add a glyph

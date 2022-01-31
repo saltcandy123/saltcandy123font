@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install FontForge
-        run: sudo apt-get install fontforge python3-fontforge
+      - uses: ./.github/actions/setup-dependencies
       - name: Update font image
         run: |
           python3 scripts/fontbuild.py -o /tmp/font.ttf

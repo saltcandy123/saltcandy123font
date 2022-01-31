@@ -1,0 +1,43 @@
+---
+name: Setup dependencies
+
+# https://github.com/fontforge/fontforge/blob/20201107/INSTALL.md
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+        architecture: "x64"
+    - name: Install dependency packages
+      run: |
+        sudo apt-get install \
+          libjpeg-dev libtiff5-dev libpng-dev libfreetype6-dev libgif-dev \
+          libgtk-3-dev libxml2-dev libpango1.0-dev libcairo2-dev \
+          libspiro-dev libuninameslist-dev \
+          ninja-build cmake build-essential gettext
+      shell: bash
+    - name: Cache fontforge directory
+      id: fontforge-cache
+      uses: actions/cache@v2
+      with:
+        path: /tmp/fontforge
+        key: ${{ runner.os }}-${{ hashFiles('.github/actions/setup-dependencies/**/*') }}
+    - name: Build FontForge
+      if: steps.fontforge-cache.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch 20201107 \
+          https://github.com/fontforge/fontforge.git \
+          /tmp/fontforge
+        mkdir -p /tmp/fontforge/build
+        cd /tmp/fontforge/build
+        cmake -GNinja ..
+        ninja
+      shell: bash
+    - name: Install FontForge
+      run: |
+        cd /tmp/fontforge/build
+        sudo ninja install
+        echo "PYTHONPATH=/usr/local/lib/python3.10/site-packages/:${PYTHONPATH}" >>${GITHUB_ENV}
+      shell: bash

@@ -12,8 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install FontForge
-        run: sudo apt-get install fontforge python3-fontforge
+      - uses: ./.github/actions/setup-dependencies
       - name: Run build script
         run: python3 scripts/distbuild.py "${GITHUB_REF#refs/tags/v}"
       - name: Upload artifact

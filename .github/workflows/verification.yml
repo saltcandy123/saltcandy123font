@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install FontForge
-        run: sudo apt-get install fontforge python3-fontforge
+      - uses: ./.github/actions/setup-dependencies
       - name: Check glyph SVG files
         run: |
           python3 scripts/glyphclean.py glyphs/
