@@ -75,7 +75,12 @@ def read_svg_size(path_to_svg: pathlib.Path) -> typing.Tuple[int, int]:
         return width, height
 
 
-def main():
+def generate_font_file(*, version: str, file_path: pathlib.Path) -> None:
+    font = build_saltcandy123font(version=version)
+    font.generate(str(file_path))
+
+
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "-o",
@@ -91,11 +96,7 @@ def main():
         help="build a font as FONT_VERSION",
     )
     args = parser.parse_args()
-    outfile_path = args.o
-    font_version = args.t
-
-    font = build_saltcandy123font(version=font_version)
-    font.generate(str(outfile_path))
+    generate_font_file(version=args.t, file_path=args.o)
 
 
 if __name__ == "__main__":

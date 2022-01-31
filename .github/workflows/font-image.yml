@@ -1,4 +1,4 @@
-
+---
 name: Font image
 
 on:
@@ -9,21 +9,20 @@ jobs:
     name: Update font image
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: Install FontForge
-      run: sudo apt-get install fontforge python3-fontforge
-    - name: Update font image
-      run: |
-        python3 scripts/build_font.py -o font.ttf
-        bash scripts/generate-fontimage.sh font.ttf fontimage.png
-        rm font.ttf
-    - name: Push the update to GitHub
-      run: |
-        git config user.email "saltcandy123@gmail.com"
-        git config user.name "saltcandy123 (GitHub Actions)"
-        git add fontimage.png
-        if git commit -m "Update font image"; then
-          git push origin
-        else
-          echo No change on fontimage.png
-        fi
+      - uses: actions/checkout@v2
+      - name: Install FontForge
+        run: sudo apt-get install fontforge python3-fontforge
+      - name: Update font image
+        run: |
+          python3 scripts/fontbuild.py -o /tmp/font.ttf
+          bash scripts/fontimagegen.sh /tmp/font.ttf fontimage.png
+      - name: Push the update to GitHub
+        run: |
+          git config user.email "saltcandy123@gmail.com"
+          git config user.name "saltcandy123 (GitHub Actions)"
+          git add fontimage.png
+          if git commit -m "Update font image"; then
+            git push origin
+          else
+            echo No change on fontimage.png
+          fi

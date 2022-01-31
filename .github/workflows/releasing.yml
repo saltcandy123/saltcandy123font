@@ -1,0 +1,101 @@
+---
+name: Releasing
+
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
+jobs:
+  build-dist:
+    name: Build font
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install FontForge
+        run: sudo apt-get install fontforge python3-fontforge
+      - name: Run build script
+        run: python3 scripts/distbuild.py "${GITHUB_REF#refs/tags/v}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+  create-release:
+    name: Create release
+    needs: build-dist
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Create new release and upload assets
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const {readFileSync} = require('fs')
+            const tagName = context.ref.replace(/^refs\/tags\//, '')
+            const {
+              data: {id: releaseId}
+            } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tagName,
+              name: tagName
+            })
+            const assetFilenames = ['saltcandy123font.ttf', 'saltcandy123font.woff']
+            for (const filename of assetFilenames) {
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: releaseId,
+                name: filename,
+                data: readFileSync(`./dist/${filename}`)
+              })
+            }
+  publish-to-npm-registry:
+    name: Publish npm package to npm registry
+    needs: build-dist
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Publish package
+        run: |
+          cd dist/npm-package
+          yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish-to-github-registry:
+    name: Publish npm package to GitHub Packages registry
+    needs: build-dist
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@saltcandy123'
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Publish package
+        run: |
+          cd dist/npm-package
+          yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

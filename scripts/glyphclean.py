@@ -10,7 +10,7 @@ import xml.dom.minidom
 
 
 def clean_dom(doc: xml.dom.minidom.Document) -> None:
-    svg = doc.firstChild
+    svg = doc.documentElement
     namespaces = set()
     for key in set(svg.attributes.keys()) - {"xmlns", "width", "height"}:
         svg.removeAttribute(key)
@@ -34,7 +34,7 @@ def clean_dom(doc: xml.dom.minidom.Document) -> None:
 
 
 def add_template(doc: xml.dom.minidom.Document, char_code: int) -> None:
-    svg = doc.firstChild
+    svg = doc.documentElement
     nodes = list()
     width = int(svg.getAttribute("width"))
     height = int(svg.getAttribute("height"))

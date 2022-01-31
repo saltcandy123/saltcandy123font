@@ -1,37 +1,38 @@
+---
 name: Verification
 
 on:
   push:
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-dist:
     name: Build font
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: Lint glyph SVG files
-      run: |
-        python3 scripts/clean_glyphs.py glyphs/
-        git diff --numstat --exit-code
-    - name: Install FontForge
-      run: sudo apt-get install fontforge python3-fontforge
-    - name: Build dist
-      run: bash scripts/build-dist.sh 0.0.0
-    - name: Archive dist
-      uses: actions/upload-artifact@v2
-      with:
-        path: dist
-        name: dist
+      - uses: actions/checkout@v2
+      - name: Install FontForge
+        run: sudo apt-get install fontforge python3-fontforge
+      - name: Check glyph SVG files
+        run: |
+          python3 scripts/glyphclean.py glyphs/
+          git diff --numstat --exit-code
+      - name: Build dist
+        run: python3 scripts/distbuild.py 0.0.0
+      - name: Archive dist
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist
+          name: dist
   super-linter:
-    name: Run Super-Linter
+    name: Check with Super-Linter
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run Super-Linter
-      uses: github/super-linter@v4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        FILTER_REGEX_EXCLUDE: .*/glyphs/.*
+      - uses: actions/checkout@v2
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_EXCLUDE: .*/glyphs/.*
