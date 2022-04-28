@@ -1,30 +1,62 @@
 {
-  "name": "saltcandy123font-github-pages",
+  "name": "saltcandy123font-demo-page",
   "author": "saltcandy123 <saltcandy123@gmail.com>",
   "license": "MIT",
+  "homepage": ".",
   "scripts": {
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "dev": "next",
-    "build": "next build && next export -o dist"
+    "lint": "prettier -c src && eslint src",
+    "lint:fix": "prettier -w src && eslint src --fix",
+    "dev": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
-    "@mui/material": "^5.3.1",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.2",
+    "@mui/material": "^5.6.2",
     "@saltcandy123/saltcandy123font": "^0.6.0",
-    "next": "^12.0.9",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.6.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.4.2"
   },
-  "devDependencies": {
-    "@types/node": "^17.0.13",
-    "@types/react": "^17.0.38",
-    "eslint": "^8.8.0",
-    "eslint-config-next": "^12.0.9",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.5.1",
-    "typescript": "^4.5.5"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/all",
+      "prettier"
+    ],
+    "rules": {
+      "react/jsx-max-depth": "off",
+      "react/jsx-no-literals": "off",
+      "react/jsx-filename-extension": [
+        "error",
+        {
+          "extensions": [
+            ".jsx",
+            ".tsx"
+          ]
+        }
+      ]
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
