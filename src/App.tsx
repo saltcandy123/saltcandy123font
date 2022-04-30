@@ -35,7 +35,7 @@ export function App(): JSX.Element {
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar sx={{ width: "100%", maxWidth: "md", ml: "auto", mr: "auto" }}>
-          <Typography component="span" noWrap sx={{ flexGrow: 1 }} variant="h6">
+          <Typography component="h1" noWrap sx={{ flexGrow: 1 }} variant="h6">
             <Link color="inherit" href="." underline="none">
               saltcandy123font
             </Link>
@@ -63,16 +63,6 @@ export function App(): JSX.Element {
           mb: 4,
         }}
       >
-        <Typography
-          component="h1"
-          gutterBottom
-          sx={{
-            wordBreak: "break-word",
-          }}
-          variant="h3"
-        >
-          saltcandy123font demo
-        </Typography>
         <Box mb={4}>
           <TextField
             InputLabelProps={{ sx: { fontFamily: "sans-serif" } }}
