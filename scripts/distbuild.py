@@ -4,48 +4,16 @@
 
 import argparse
 import json
+import os
 import pathlib
 import re
 import shutil
 import subprocess
+import zipfile
 
 import fontbuild
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "version",
-        metavar="VERSION",
-        type=Version,
-        help='build distribution files as VERSION (e.g. "0.1.2")',
-    )
-    args = parser.parse_args()
-
-    version = args.version
-
-    dist_dir = BASE_DIR.joinpath("dist")
-    dist_dir.mkdir(exist_ok=True)
-
-    font_filenames = [f"saltcandy123font-Regular.{ext}" for ext in ["ttf", "woff"]]
-    for filename in font_filenames:
-        file_path = dist_dir.joinpath(filename)
-        fontbuild.generate_font_file(
-            version=version.get_font_version(), file_path=file_path
-        )
-
-    npm_package_dir = dist_dir.joinpath("npm-package")
-    npm_package_dir.mkdir(exist_ok=True)
-
-    for filename in font_filenames:
-        shutil.copy(dist_dir.joinpath(filename), npm_package_dir)
-
-    with open(npm_package_dir.joinpath("README.md"), "w") as f:
-        f.write(build_npm_readme_content())
-    with open(npm_package_dir.joinpath("package.json"), "w") as f:
-        f.write(build_package_json_content(version=version.get_package_version()))
 
 
 class Version:
@@ -75,6 +43,39 @@ class Version:
         return f"{self.major}.{self.minor:02}{self.patch}"
 
 
+def build_files(version: Version) -> None:
+    license_path = BASE_DIR.joinpath("OFL.txt")
+
+    dist_dir = BASE_DIR.joinpath("dist")
+    dist_dir.mkdir(exist_ok=True)
+
+    font_paths = [
+        dist_dir.joinpath(f"saltcandy123font-Regular.{ext}") for ext in ["ttf", "woff"]
+    ]
+    font = fontbuild.build_saltcandy123font(version=version.get_font_version())
+    for path in font_paths:
+        fontbuild.generate_file(font=font, path=path)
+
+    with zipfile.ZipFile(dist_dir.joinpath("saltcandy123font.zip"), "w") as zipf:
+        zipf.write(license_path, license_path.name)
+        for path in font_paths:
+            zipf.write(path, path.name)
+
+    npm_package_dir = dist_dir.joinpath("npm-package")
+    npm_package_dir.mkdir(exist_ok=True)
+
+    for path in font_paths:
+        shutil.copy(path, npm_package_dir)
+    shutil.copy(license_path, npm_package_dir)
+    with open(npm_package_dir.joinpath("README.md"), "w") as f:
+        f.write(build_npm_readme_content())
+    with open(npm_package_dir.joinpath("package.json"), "w") as f:
+        f.write(build_package_json_content(version=version))
+
+    for path in font_paths:
+        os.remove(path)
+
+
 def build_npm_readme_content() -> str:
     with open(BASE_DIR.joinpath("README-npm.md")) as f:
         readme_content = f.read()
@@ -93,15 +94,28 @@ def build_npm_readme_content() -> str:
     return readme_content
 
 
-def build_package_json_content(*, version: str) -> str:
+def build_package_json_content(*, version: Version) -> str:
     metadata = {
         "name": "@saltcandy123/saltcandy123font",
-        "version": version,
+        "version": version.get_package_version(),
         "description": "A handwritten font",
         "repository": "https://github.com/saltcandy123/saltcandy123font",
         "author": "saltcandy123",
+        "license": "OFL-1.1",
     }
     return json.dumps(metadata, indent=2)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "version",
+        metavar="VERSION",
+        type=Version,
+        help='build distribution files as VERSION (e.g. "0.1.2")',
+    )
+    args = parser.parse_args()
+    build_files(args.version)
 
 
 if __name__ == "__main__":

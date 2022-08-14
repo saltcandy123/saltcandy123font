@@ -45,8 +45,7 @@ jobs:
               name: tagName
             })
             const assetFilenames = [
-              'saltcandy123font-Regular.ttf',
-              'saltcandy123font-Regular.woff'
+              'saltcandy123font.zip'
             ]
             for (const filename of assetFilenames) {
               await github.rest.repos.uploadReleaseAsset({
@@ -64,8 +63,8 @@ jobs:
     steps:
       - uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "14.x"
+          registry-url: "https://registry.npmjs.org"
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
@@ -87,9 +86,9 @@ jobs:
     steps:
       - uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@saltcandy123'
+          node-version: "14.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@saltcandy123"
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:

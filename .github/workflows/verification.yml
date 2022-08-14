@@ -45,7 +45,7 @@ jobs:
         run: |
           fontbakery check-universal \
             -x com.google.fonts/check/monospace \
-            dist/saltcandy123font-Regular.ttf
+            dist/npm-package/saltcandy123font-Regular.ttf
   super-linter:
     name: Check with Super-Linter
     runs-on: ubuntu-latest

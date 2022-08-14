@@ -9,13 +9,15 @@ import xml.dom.minidom
 
 import fontforge
 
+BASE_DIR = pathlib.Path(__file__).parent.parent
+
 
 def build_saltcandy123font(*, version: str) -> fontforge.font:
     font = fontforge.font()
     font.fontname = "saltcandy123font"
     font.fullname = font.fontname
     font.familyname = font.fontname
-    font.copyright = "Copyright (C) saltcandy123"
+    font.copyright = "Copyright (c) 2021-2022 saltcandy123"
     font.weight = "Regular"
     font.os2_weight = 400
     font.version = version
@@ -25,6 +27,9 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     font.descent = 200
     font.em = 1000
     font.hhea_linegap = font.os2_typolinegap = 0
+    with open(BASE_DIR.joinpath("OFL.txt")) as f:
+        font.appendSFNTName(0x0409, 13, f.read().strip())
+    font.appendSFNTName(0x0409, 14, "http://scripts.sil.org/OFL")
 
     # Add lookup subtable for vertical writing
     font.addLookup(
@@ -40,7 +45,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     )
     font.addLookupSubtable("gsub_vert", "vert")
 
-    glyphs_dir = pathlib.Path(__file__).parent.parent.joinpath("glyphs")
+    glyphs_dir = BASE_DIR.joinpath("glyphs")
     all_svg_paths = list(glyphs_dir.glob("**/*.svg"))
 
     # Import base glyphs (e.g. u3041.svg)
@@ -89,10 +94,9 @@ def read_svg_size(path_to_svg: pathlib.Path) -> tuple[int, int]:
         return width, height
 
 
-def generate_font_file(*, version: str, file_path: pathlib.Path) -> None:
-    font = build_saltcandy123font(version=version)
+def generate_file(*, font: fontforge.font, path: pathlib.Path) -> None:
     font.generate(
-        str(file_path),
+        str(path),
         flags=(
             "opentype",
             "old-kern",
@@ -122,7 +126,8 @@ def main() -> None:
         help="build a font as FONT_VERSION",
     )
     args = parser.parse_args()
-    generate_font_file(version=args.t, file_path=args.o)
+    font = build_saltcandy123font(version=args.t)
+    generate_file(font=font, path=args.o)
 
 
 if __name__ == "__main__":
