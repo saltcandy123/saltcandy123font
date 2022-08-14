@@ -7,7 +7,7 @@
     "lint": "prettier -u -c './*' .github public src --ignore-path .gitignore && eslint src",
     "lint:fix": "prettier -u -w './*' .github public src --ignore-path .gitignore && eslint src --fix",
     "dev": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "BUILD_PATH=dist react-scripts build"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
