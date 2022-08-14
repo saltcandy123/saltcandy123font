@@ -6,7 +6,7 @@ name: Setup dependencies
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: "3.10"
         architecture: "x64"
@@ -21,7 +21,7 @@ runs:
       shell: bash
     - name: Cache fontforge directory
       id: fontforge-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: /tmp/fontforge
         key: ${{ runner.os }}-${{ hashFiles('.github/actions/setup-dependencies/**/*') }}

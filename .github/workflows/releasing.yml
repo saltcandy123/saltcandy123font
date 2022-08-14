@@ -11,12 +11,12 @@ jobs:
     name: Build font
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-dependencies
       - name: Run build script
         run: python3 scripts/distbuild.py "${GITHUB_REF#refs/tags/v}"
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dist
           path: dist
@@ -26,12 +26,12 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
       - name: Create new release and upload assets
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             const {readFileSync} = require('fs')
@@ -61,12 +61,12 @@ jobs:
     needs: build-dist
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: "14.x"
           registry-url: "https://registry.npmjs.org"
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
@@ -84,13 +84,13 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: "14.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@saltcandy123"
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist

@@ -9,12 +9,12 @@ jobs:
     name: Update font image
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-dependencies
+      - name: Build font
+        run: python3 scripts/fontbuild.py -o /tmp/font.ttf
       - name: Update font image
-        run: |
-          python3 scripts/fontbuild.py -o /tmp/font.ttf
-          bash scripts/fontimagegen.sh /tmp/font.ttf fontimage.png
+        run: bash scripts/fontimagegen.sh /tmp/font.ttf fontimage.png
       - name: Push the update to GitHub
         run: |
           git config user.email "saltcandy123@gmail.com"
