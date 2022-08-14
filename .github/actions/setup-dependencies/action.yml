@@ -12,10 +12,11 @@ runs:
         architecture: "x64"
     - name: Install dependency packages
       run: |
-        sudo apt-get install \
+        sudo apt update
+        sudo apt install \
           libjpeg-dev libtiff5-dev libpng-dev libfreetype6-dev libgif-dev \
           libgtk-3-dev libxml2-dev libpango1.0-dev libcairo2-dev \
-          libspiro-dev libuninameslist-dev \
+          libspiro-dev \
           ninja-build cmake build-essential gettext
       shell: bash
     - name: Cache fontforge directory
@@ -27,7 +28,7 @@ runs:
     - name: Build FontForge
       if: steps.fontforge-cache.outputs.cache-hit != 'true'
       run: |
-        git clone --depth 1 --branch 20201107 \
+        git clone --depth 1 --branch 20220308 \
           https://github.com/fontforge/fontforge.git \
           /tmp/fontforge
         mkdir -p /tmp/fontforge/build

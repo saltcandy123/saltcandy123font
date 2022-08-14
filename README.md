@@ -6,10 +6,12 @@ This is a font based on the handwriting of @saltcandy123.
 
 ![A font image of saltcandy123font.](fontimage.png)
 
-Download the font files (TrueType, WOFF) from [the release page](https://github.com/saltcandy123/saltcandy123font/releases/latest).
-If you plan to use the font in a Node.js project, [an npm package](https://www.npmjs.com/package/@saltcandy123/saltcandy123font) (`@saltcandy123/saltcandy123font`) is also available.
+Visit [demo page](https://saltcandy123.github.io/saltcandy123font/) to try the font with your texts.
 
-Visit [a demo page](https://saltcandy123.github.io/saltcandy123font/) to try the font with your texts.
+## Installation
+
+- Get fhe font files from [the release page](https://github.com/saltcandy123/saltcandy123font/releases/latest).
+- If you use npm, `npm install @saltcandy123/saltcandy123font` ([npm package](https://www.npmjs.com/package/@saltcandy123/saltcandy123font))
 
 ## Supported characters
 
@@ -30,7 +32,7 @@ Visit [a demo page](https://saltcandy123.github.io/saltcandy123font/) to try the
 - **[`scripts/distbuild.py`](scripts/distbuild.py)** builds distribution files under `dist` directory.
 - **[`scripts/fontimagegen.sh`](scripts/fontimagegen.sh)** produces a font thumbnail image.
 
-Note that the scripts require Python 3.10 and [FontForge](https://fontforge.org/) 2020-11-07.
+Note that the scripts require Python 3.10 and [FontForge](https://fontforge.org/) 2022-03-08.
 
 Refer to `gh-pages-src` branch for the source code of the demo page.
 

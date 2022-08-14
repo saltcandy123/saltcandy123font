@@ -77,13 +77,6 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     font.removeOverlap()
     font.simplify(1, ("removesingletonpoints",))
 
-    # Workaround for a trailing space in version string
-    # Wait for the next release of FontForge (2022?)
-    # https://github.com/fontforge/fontforge/issues/4595
-    font.sfnt_names = tuple(
-        (lang, id_, val.strip()) for lang, id_, val in font.sfnt_names
-    )
-
     return font
 
 
