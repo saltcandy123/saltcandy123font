@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "./static/css/main.9d63a603.css",
+    "main.js": "./static/js/main.74d923d3.js",
+    "static/media/saltcandy123font-Regular.ttf": "./static/media/saltcandy123font-Regular.960bf215e9194184cfea.ttf",
+    "static/media/saltcandy123font-Regular.woff": "./static/media/saltcandy123font-Regular.472859eeedeea02d01ed.woff",
+    "index.html": "./index.html",
+    "main.9d63a603.css.map": "./static/css/main.9d63a603.css.map",
+    "main.74d923d3.js.map": "./static/js/main.74d923d3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9d63a603.css",
+    "static/js/main.74d923d3.js"
+  ]
+}
