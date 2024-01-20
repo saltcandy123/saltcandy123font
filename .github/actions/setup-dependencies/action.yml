@@ -1,5 +1,5 @@
 ---
-name: Setup dependencies
+name: Set up dependencies
 
 # https://github.com/fontforge/fontforge/blob/20201107/INSTALL.md
 
@@ -8,7 +8,7 @@ runs:
   steps:
     - uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
+        python-version: "3.11"
         architecture: "x64"
     - name: Install dependency packages
       run: |
@@ -24,11 +24,11 @@ runs:
       uses: actions/cache@v3
       with:
         path: /tmp/fontforge
-        key: ${{ runner.os }}-${{ hashFiles('.github/actions/setup-dependencies/**/*') }}
+        key: fontforge-${{ runner.os }}-${{ hashFiles('.github/actions/setup-dependencies/**/*') }}
     - name: Build FontForge
       if: steps.fontforge-cache.outputs.cache-hit != 'true'
       run: |
-        git clone --depth 1 --branch 20220308 \
+        git clone --depth 1 --branch 20230101 \
           https://github.com/fontforge/fontforge.git \
           /tmp/fontforge
         mkdir -p /tmp/fontforge/build
@@ -40,5 +40,5 @@ runs:
       run: |
         cd /tmp/fontforge/build
         sudo ninja install
-        echo "PYTHONPATH=/usr/local/lib/python3.10/site-packages/:${PYTHONPATH}" >>${GITHUB_ENV}
+        echo "PYTHONPATH=/usr/local/lib/python3.11/site-packages/:${PYTHONPATH}" >>${GITHUB_ENV}
       shell: bash

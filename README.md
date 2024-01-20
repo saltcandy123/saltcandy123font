@@ -32,7 +32,7 @@ Visit [demo page](https://saltcandy123.github.io/saltcandy123font/) to try the f
 - **[`scripts/distbuild.py`](scripts/distbuild.py)** builds distribution files under `dist` directory.
 - **[`scripts/fontimagegen.sh`](scripts/fontimagegen.sh)** produces a font thumbnail image.
 
-Note that the scripts require Python 3.10 and [FontForge](https://fontforge.org/) 2022-03-08.
+Note that the scripts require Python 3.11 and [FontForge](https://fontforge.org/) 2023-01-01.
 
 Refer to `gh-pages-src` branch for the source code of the demo page.
 
