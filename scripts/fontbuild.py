@@ -17,7 +17,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     font.fontname = "saltcandy123font"
     font.fullname = font.fontname
     font.familyname = font.fontname
-    font.copyright = "Copyright (c) 2021-2022 saltcandy123"
+    font.copyright = "Copyright (c) 2021-2024 saltcandy123"
     font.weight = "Regular"
     font.os2_weight = 400
     font.version = version
