@@ -52,6 +52,10 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     glyphs_dir = BASE_DIR.joinpath("glyphs")
     all_svg_paths = list(glyphs_dir.glob("**/*.svg"))
 
+    outline_import_options = {
+        "scale": False,
+    }
+
     # Import base glyphs (e.g. u3041.svg)
     for svg_path in all_svg_paths:
         match = re.search("^u([0-9a-f]+).svg$", svg_path.name)
@@ -59,7 +63,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
             continue
         code = int(match.group(1), 16)
         glyph = font.createChar(code)
-        glyph.importOutlines(str(svg_path))
+        glyph.importOutlines(str(svg_path), **outline_import_options)
         glyph.width, glyph.vwidth = read_svg_size(svg_path)
 
     # Import replacement glyphs (e.g. u3041-vert.svg)
@@ -72,7 +76,7 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
         base_glyph = font[code]
         glyph_name = f"{base_glyph.glyphname}.{subtable_name}"
         glyph = font.createChar(-1, glyph_name)
-        glyph.importOutlines(str(svg_path))
+        glyph.importOutlines(str(svg_path), **outline_import_options)
         glyph.width, glyph.vwidth = read_svg_size(svg_path)
         base_glyph.addPosSub(subtable_name, glyph_name)
 
@@ -99,8 +103,8 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
 
 def read_svg_size(path_to_svg: pathlib.Path) -> tuple[int, int]:
     with xml.dom.minidom.parse(str(path_to_svg)) as doc:
-        width = int(doc.childNodes[0].getAttribute("width"))
-        height = int(doc.childNodes[0].getAttribute("height"))
+        viewbox = doc.childNodes[0].getAttribute("viewBox")
+        _, _, width, height = [int(n) for n in viewbox.replace(",", " ").split()]
         return width, height
 
 

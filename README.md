@@ -46,7 +46,7 @@ mkdir -p glyphs/draft
 cat <<EOF >glyphs/draft/u5b57.svg
 <?xml version="1.0" ?>
 <svg xmlns="http://www.w3.org/2000/svg"
-  width="1000" height="1000"></svg>
+  viewBox="0 0 1000 1000"></svg>
 EOF
 
 ## Add template lines
