@@ -1,9 +1,10 @@
 @font-face {
   font-family: "saltcandy123font";
-  src: url("~@saltcandy123/saltcandy123font/saltcandy123font-Regular.ttf")
-      format("truetype"),
+  src:
     url("~@saltcandy123/saltcandy123font/saltcandy123font-Regular.woff")
-      format("woff");
+      format("woff"),
+    url("~@saltcandy123/saltcandy123font/saltcandy123font-Regular.ttf")
+      format("truetype");
   font-weight: 400;
   font-style: normal;
 }

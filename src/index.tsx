@@ -8,5 +8,5 @@ if (!root) throw new Error("root was not found");
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

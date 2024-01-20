@@ -10,20 +10,20 @@
     "build": "BUILD_PATH=dist react-scripts build"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.0",
-    "@emotion/styled": "^11.10.0",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.10.0",
-    "@saltcandy123/saltcandy123font": "^0.7.0",
-    "@types/node": "^18.7.3",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "eslint-config-prettier": "^8.5.0",
-    "prettier": "^2.7.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.7.4"
+    "@emotion/react": "11.11.3",
+    "@emotion/styled": "11.11.0",
+    "@mui/icons-material": "5.15.5",
+    "@mui/material": "5.15.5",
+    "@saltcandy123/saltcandy123font": "0.7.1",
+    "@types/node": "20.11.5",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.18",
+    "eslint-config-prettier": "9.1.0",
+    "prettier": "3.2.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "5.3.3"
   },
   "eslintConfig": {
     "extends": [
