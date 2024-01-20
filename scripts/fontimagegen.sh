@@ -11,19 +11,23 @@ set -eux
 
 fontimage \
     "${FONT_FILE}" \
-    --width 460 \
-    --pixelsize 20 \
+    --width 560 \
+    --pixelsize 40 \
     --fontname \
+    --pixelsize 20 \
+    --text "A font based on the handwriting of @saltcandy123" \
+    --text "@saltcandy123 による手書きフォント" \
+    --text " " \
     --text " " \
     --text "0123456789 ()[]{}<>/\\|\`~@#$%^&*_+-=;:'\",.!?" \
     --text "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz" \
-    --text " " \
-    --text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." \
     -o "${OUTPUT_FILE}"
 
 convert \
     "${OUTPUT_FILE}" \
     -bordercolor white \
-    -border 20x20 \
+    -gravity center \
+    -extent 560x240 \
+    -border 40x40 \
     -strip \
     "${OUTPUT_FILE}"
