@@ -27,9 +27,13 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     font.descent = 200
     font.em = 1000
     font.hhea_linegap = font.os2_typolinegap = 0
+    font.os2_stylemap |= 0b1000000  # OS/2 fsSelection REGULAR bit
+
     with open(BASE_DIR.joinpath("OFL.txt")) as f:
-        font.appendSFNTName(0x0409, 13, f.read().strip())
-    font.appendSFNTName(0x0409, 14, "http://scripts.sil.org/OFL")
+        license = f.read().strip()
+    en_us = 0x0409
+    font.appendSFNTName(en_us, 13, license)
+    font.appendSFNTName(en_us, 14, "http://scripts.sil.org/OFL")
 
     # Add lookup subtable for vertical writing
     font.addLookup(
@@ -75,7 +79,20 @@ def build_saltcandy123font(*, version: str) -> fontforge.font:
     # Simplify all the glyphs
     font.selection.all()
     font.removeOverlap()
-    font.simplify(1, ("removesingletonpoints",))
+    font.simplify(
+        1,
+        (
+            "ignoreslopes",
+            "ignoreextrema",
+            "smoothcurves",
+            "choosehv",
+            "forcelines",
+            "nearlyhvlines",
+            "mergelines",
+            "setstarttoextremum",
+            "removesingletonpoints",
+        ),
+    )
 
     return font
 
@@ -96,6 +113,7 @@ def generate_file(*, font: fontforge.font, path: pathlib.Path) -> None:
             "winkern",
             "dummy-dsig",
             "no-FFTM-table",
+            "round",  # It's needed to reduce file size of woff
             "no-hints",
             "no-flex",
             "omit-instructions",
